@@ -7,23 +7,27 @@ module Bitz
   include FixedFunctionsBits
 
   class MathematicalOperations
-    def sum_bits bits_production1, bits_production2
-      result = bits_production1_reverse = FixedFunctionsBits.reverse(bits_production1)
-      bits_production2_reverse = FixedFunctionsBits.reverse(bits_production2)
+    def sum_bits(product_bits_from_above, bits_of_product_from_below)
+      FixedFunctionsBits.padding_to_mathematical_operations!(product_bits_from_above, bits_of_product_from_below)
 
-      (0...bits_production1_reverse.length).each do |bit1|
-        bit2 = bit1
+      total = FixedFunctionsBits.padding("", product_bits_from_above.length)
+      
+      (product_bits_from_above.length - 1).downto(0) do |index_bit_from_above|
+        index_bit_from_below = index_bit_from_above
 
-        if bits_production1_reverse[bit1] == "1" && bits_production2_reverse[bit2] == "1"
-          result[bit1 + 1] = "1"
-          result[bit1] = "0"
-        elsif bits_production1_reverse[bit1] == "1" && bits_production2_reverse[bit2] == "0"
-          result[bit1] = "1"
-        elsif bits_production1_reverse[bit1] == "0" && bits_production2_reverse[bit2] == "1"
-          result[bit1] = "1"
+        if product_bits_from_above[index_bit_from_above] == "0" && bits_of_product_from_below[index_bit_from_below] == "0"
+          total[index_bit_from_above] = "0"
+        elsif product_bits_from_above[index_bit_from_above] == "1" && bits_of_product_from_below[index_bit_from_below] == "0"
+          total[index_bit_from_above] = "1"
+        elsif product_bits_from_above[index_bit_from_above] == "0" && bits_of_product_from_below[index_bit_from_below] == "1"
+          total[index_bit_from_above] = "1"
+        elsif product_bits_from_above[index_bit_from_above] == "1" && bits_of_product_from_below[index_bit_from_below] == "1"
+          total[index_bit_from_above + 1] = "1"
+          total[index_bit_from_above] = "0"
         end
+      end
 
-        return reverse!(result)
+        return FixedFunctionsBits.reverse(total)
       end
     end
   end

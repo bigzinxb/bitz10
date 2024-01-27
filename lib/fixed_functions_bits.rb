@@ -17,6 +17,14 @@ module FixedFunctionsBits
         end
     end
 
+    def padding(str, amount_zero)
+        while amount_zero >= str.length
+            queue(str)
+        end
+
+        return str
+    end
+
     private
     def self.queue(str)
         str.insert(0, "0")

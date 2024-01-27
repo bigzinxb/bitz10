@@ -1,4 +1,4 @@
-require_relative '../../lib/bitz'
+require_relative '../../lib/bitz.rb'
 
 describe Bitz::MathematicalOperations do
     context 'Test mathematical operations with bits' do
