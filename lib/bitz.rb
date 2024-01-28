@@ -24,8 +24,8 @@ module Bitz
 
         carry = total / 2
 
-        bit_from_above -= 1
-        bit_from_below -= 1
+        index_from_above -= 1
+        index_from_below -= 1
       end
 
       if carry > 0
