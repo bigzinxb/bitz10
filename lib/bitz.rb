@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require_relative "bitz/version"
 require_relative 'fixed_functions_bits.rb'
 
 module Bitz
@@ -8,27 +7,32 @@ module Bitz
 
   class MathematicalOperations
     def sum_bits(product_bits_from_above, bits_of_product_from_below)
-      FixedFunctionsBits.padding_to_mathematical_operations!(product_bits_from_above, bits_of_product_from_below)
 
-      total = FixedFunctionsBits.padding("", product_bits_from_above.length)
+      sum = ""
+      carry = 0
       
-      (product_bits_from_above.length - 1).downto(0) do |index_bit_from_above|
-        index_bit_from_below = index_bit_from_above
+      index_from_above = product_bits_from_above.length - 1
+      index_from_below = bits_of_product_from_below.length - 1
 
-        if product_bits_from_above[index_bit_from_above] == "0" && bits_of_product_from_below[index_bit_from_below] == "0"
-          total[index_bit_from_above] = "0"
-        elsif product_bits_from_above[index_bit_from_above] == "1" && bits_of_product_from_below[index_bit_from_below] == "0"
-          total[index_bit_from_above] = "1"
-        elsif product_bits_from_above[index_bit_from_above] == "0" && bits_of_product_from_below[index_bit_from_below] == "1"
-          total[index_bit_from_above] = "1"
-        elsif product_bits_from_above[index_bit_from_above] == "1" && bits_of_product_from_below[index_bit_from_below] == "1"
-          total[index_bit_from_above + 1] = "1"
-          total[index_bit_from_above] = "0"
-        end
+      while index_from_above >= 0 || index_from_below >= 0
+        bit_from_above = index_from_above >= 0 ? product_bits_from_above[index_from_above].to_i : 0
+        bit_from_below = index_from_below >= 0 ? bits_of_product_from_below[index_from_below].to_i : 0
+
+        total = bit_from_above + bit_from_below + carry
+
+        sum = (total % 2).to_s + sum
+
+        carry = total / 2
+
+        bit_from_above -= 1
+        bit_from_below -= 1
       end
 
-        return FixedFunctionsBits.reverse(total)
+      if carry > 0
+        sum = carry.to_s + sum
       end
+
+      return sum
     end
   end
 end
