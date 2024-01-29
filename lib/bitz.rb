@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require_relative 'fixed_functions_bits.rb'
-
 module Bitz
-  include FixedFunctionsBits
 
   class MathematicalOperations
     def sum_bits(product_bits_from_above, bits_of_product_from_below)
@@ -33,6 +30,44 @@ module Bitz
       end
 
       return sum
+    end
+  end
+
+  class ConversionOfType
+    BASE = 2
+
+    def binary_to_decimal(binary)
+      binary = binary.to_i if binary.class == String
+      decimal = 0
+
+      (0...binary.to_s.length).each do |i|
+        decimal += (binary[i].to_i * BASE**i)
+      end
+
+      return decimal
+    end
+
+    def decimal_to_binary(decimal)
+      binary = ""
+
+      while decimal.to_i >= BASE - 1
+        rest = decimal % BASE
+        binary += rest.to_s
+
+        decimal /= BASE
+      end
+
+      return binary.reverse.to_i
+    end
+
+    def text_to_binary(str)
+      binary = ""
+
+      str.each_byte do |byte|
+        binary += (decimal_to_binary(byte)).to_s
+      end
+
+      return binary
     end
   end
 end
