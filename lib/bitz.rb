@@ -54,7 +54,7 @@ module Bitz
         rest = decimal % BASE
         binary += rest.to_s
 
-        decimal /= BASE
+        decimal.to_i /= BASE
       end
 
       return binary.reverse.to_i
