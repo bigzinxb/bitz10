@@ -37,7 +37,8 @@ module Bitz
     BASE = 2
 
     def binary_to_decimal(binary)
-      binary = binary.to_i if binary.class == String
+      binary = binary.to_s if binary.class == Integer
+      binary.reverse!
       decimal = 0
 
       (0...binary.to_s.length).each do |i|
@@ -54,7 +55,7 @@ module Bitz
         rest = decimal % BASE
         binary += rest.to_s
 
-        decimal.to_i /= BASE
+        decimal /= BASE
       end
 
       return binary.reverse.to_i
